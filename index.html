@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Data on Address IP</title>
+  </head>
+  <body>
+    <p></p>
+    <pre></pre>
+    <script>
+      const pElement = document.querySelector("p");
+      const preElement = document.querySelector("pre");
+      pElement.innerHTML = "loading...";
+
+      async function getIP() {
+        let ip = "";
+        await fetch("https://api.ipify.org?format=json")
+          .then((response) => response.json())
+          .then((data) => {
+            const res = `Your public IP address is: ${data.ip}`;
+            pElement.innerHTML = res;
+            ip = data.ip;
+          })
+          .catch((error) => {
+            console.error("Error fetching the IP address:", error);
+          });
+        return ip;
+      }
+
+      async function getDataOfUser(ip) {
+        return await fetch(`https://ipapi.co/${ip}/json/`)
+          .then((response) => response.json())
+          .then((data) => {
+            return (data = data);
+          })
+          .catch((error) => {
+            console.error("Error fetching the IP information:", error);
+          });
+      }
+      async function GetData() {
+        const ip = await getIP();
+        const data = await getDataOfUser(ip);
+        preElement.innerHTML = JSON.stringify(data, null, 2);
+        return data;
+      }
+
+      GetData();
+    </script>
+  </body>
+</html>
